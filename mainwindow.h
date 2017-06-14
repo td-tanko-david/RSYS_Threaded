@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QString mode="c", QWidget *parent = 0);
     ~MainWindow();
-    void update_messages();
+    // A global mutex
     static QMutex mutex;
 private:
     Ui::MainWindow *ui;

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QUdpSocket>
 #include <QTimer>
+#include <QMutex>
 
 class Receiver : public QObject
 {
@@ -15,6 +16,7 @@ private:
     void update();
     void process();
 
+    QMutex m_mutex;
     QTimer *m_updateTimer;
     std::vector<QString> m_receivedMessages;
 signals:
