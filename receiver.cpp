@@ -16,15 +16,16 @@ Receiver::Receiver(QObject *parent) : QObject(parent)
             &Receiver::process
             );
 
-    // Create a timer that calls a function every second
-    // The function displays the received messages
-    this->m_updateTimer = new QTimer(this);
-    connect(this->m_updateTimer,
-            &QTimer::timeout,
+
+    this->m_updateThread = new QThread();
+    this->m_updater = new Updater();
+    this->m_updater->moveToThread(this->m_updateThread);
+    this->m_updateThread->start();
+    connect(this->m_updater,
+            &Updater::update_now,
             this,
             &Receiver::update
             );
-    this->m_updateTimer->start(1000);
 }
 
 // Gets every received datagram from the socket
