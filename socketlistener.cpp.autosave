@@ -1,6 +1,4 @@
 #include "socketlistener.h"
-#include <QThread>
-#include <iostream>
 
 SocketListener::SocketListener(QObject *parent) : QThread(parent)
 {
@@ -23,7 +21,6 @@ void SocketListener::run(){
 // Gets every received datagram from the socket
 // and stores the data in a vector.
 void SocketListener::process(){
-    std::cout << "PROCESS " << this->thread()->currentThreadId() << std::endl;
     if (this->mutex.tryLock()){
         while (this->m_socket->hasPendingDatagrams()){
             QByteArray datagram;
@@ -40,7 +37,6 @@ void SocketListener::process(){
 // Every message sent is removed from the vector.
 // This function is called by the Receiver::update method.
 QString SocketListener::get_messages(){
-    std::cout << "GET " << this->thread()->currentThreadId() << std::endl;
     QString messages;
     if (this->mutex.tryLock()){
         while (!this->m_receivedMessages.empty()){

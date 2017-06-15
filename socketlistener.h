@@ -2,10 +2,11 @@
 #define SOCKETLISTENER_H
 
 #include <QObject>
+#include <QThread>
 #include <QUdpSocket>
 #include <QMutex>
 
-class SocketListener : public QObject
+class SocketListener : public QThread
 {
     Q_OBJECT
 public:
@@ -14,6 +15,7 @@ public:
     // from the m_receivedMessages vector.
     // The vector will be emptied.
     QString get_messages();
+    void run();
 private:
     // QUdpSocket used to receive datagrams.
     QUdpSocket *m_socket;

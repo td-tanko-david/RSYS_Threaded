@@ -4,9 +4,7 @@ Receiver::Receiver(QObject *parent) : QObject(parent)
 {
     // Create a socket listener and a thread for it to work in
     this->m_socketListener = new SocketListener();
-    this->m_socketListenerThread = new QThread();
-    this->m_socketListenerThread->start();
-    this->m_socketListener->moveToThread(this->m_socketListenerThread);
+    this->m_socketListener->start();
 
     // Create a timer that calls a function every second
     // The function displays the received messages
