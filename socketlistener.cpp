@@ -5,7 +5,7 @@ SocketListener::SocketListener(QObject *parent) : QObject(parent)
     // Create the socket, bind it to an address and port
     // to enable receiving and connect the signal that is
     // emitted when a packet is received to a processing
-    // function
+    // function.
     this->m_socket = new QUdpSocket(this);
     this->m_socket->bind(QHostAddress::LocalHost,64321);
     connect(this->m_socket,
@@ -16,7 +16,7 @@ SocketListener::SocketListener(QObject *parent) : QObject(parent)
 }
 
 // Gets every received datagram from the socket
-// and stores the data in a vector
+// and stores the data in a vector.
 void SocketListener::process(){
     if (this->mutex.tryLock()){
        while (this->m_socket->hasPendingDatagrams()){
@@ -29,6 +29,9 @@ void SocketListener::process(){
     }
 }
 
+// Gets every message from the vector of messages
+// and sends them through an emitted signal.
+// Every message sent is removed from the vector.
 QString SocketListener::get_messages(){
     QString messages;
     if (this->mutex.tryLock()){
@@ -39,8 +42,6 @@ QString SocketListener::get_messages(){
             this->m_receivedMessages.pop_back();
         }
         this->mutex.unlock();
-    } else {
-        messages += "Lock not got\n";
     }
     return messages;
 }

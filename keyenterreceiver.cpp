@@ -7,7 +7,7 @@ keyEnterReceiver::keyEnterReceiver(QObject *parent) : QObject(parent)
 
 }
 
-// Emits the enter_pressed signal when either Enter key is pressed
+// Emits the enter_pressed signal when either Enter key is pressed.
 bool keyEnterReceiver::eventFilter(QObject* obj, QEvent* event)
 {
     if (event->type()==QEvent::KeyPress) {

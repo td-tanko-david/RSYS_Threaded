@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QThread>
 #include "socketlistener.h"
 
 class Receiver : public QObject
@@ -15,6 +16,7 @@ private:
 
     QTimer *m_updateTimer;
     SocketListener *m_socketListener;
+    QThread *m_socketListenerThread;
 signals:
     void add_message(QString msg);
 public slots:
