@@ -10,8 +10,7 @@ MyTextEdit::MyTextEdit(QWidget *parent): QTextEdit(parent)
 // Sets up the message to be sent and emits a signal containing the message.
 void MyTextEdit::init_send(){
     QString msgToSend = "";
-    //msgToSend += this->m_date->currentDateTime().toString(Qt::SystemLocaleShortDate);
-    msgToSend += this->m_date->currentDateTimeUtc().toString();
+    msgToSend += this->m_date->currentDateTime().toString(Qt::SystemLocaleShortDate);
     msgToSend += ": " + this->toPlainText();
     this->setText("");
     emit send_msg(msgToSend);

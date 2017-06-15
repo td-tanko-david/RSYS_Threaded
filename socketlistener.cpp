@@ -1,8 +1,5 @@
 #include "socketlistener.h"
 
-#include <QDateTime>
-#include <iostream>
-
 SocketListener::SocketListener(QObject *parent) : QObject(parent)
 {
     // Create the socket, bind it to an address and port
@@ -21,35 +18,31 @@ SocketListener::SocketListener(QObject *parent) : QObject(parent)
 // Gets every received datagram from the socket
 // and stores the data in a vector.
 void SocketListener::process(){
-    //if (this->mutex.tryLock()){
-        std::cout<< "vvvvvvvvvvvvvvvvvvvvvvvvvv" << std::endl;
+    if (this->mutex.tryLock()){
        while (this->m_socket->hasPendingDatagrams()){
-            QDateTime time;
-            std::cout << "Processed: " << time.currentDateTimeUtc().toString().toStdString() << std::endl;
             QByteArray datagram;
             datagram.resize(this->m_socket->pendingDatagramSize());
             this->m_socket->readDatagram(datagram.data(), datagram.size());
             this->m_receivedMessages.push_back(QString(datagram.data()));
         }
-       std::cout<< "^^^^^^^^^^^^^^^^^^^^^^^^^^" << std::endl;
-        //this->mutex.unlock();
-    //}
+        this->mutex.unlock();
+    }
 }
 
 // Gets every message from the vector of messages
 // and sends them through an emitted signal.
 // Every message sent is removed from the vector.
+// This function is called by the Receiver::update method.
 QString SocketListener::get_messages(){
     QString messages;
-    //if (this->mutex.tryLock()){
-        std::cout<< "Update" << std::endl;
+    if (this->mutex.tryLock()){
         while (!this->m_receivedMessages.empty()){
             messages += this->m_receivedMessages.back();
             if (this->m_receivedMessages.size()>1)
                  messages += "\n";
             this->m_receivedMessages.pop_back();
         }
-        //this->mutex.unlock();
-   // }
+        this->mutex.unlock();
+    }
     return messages;
 }
