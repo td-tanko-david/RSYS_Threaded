@@ -1,20 +1,13 @@
 #include "receiver.h"
 #include <iostream>
-#include <mainwindow.h>
 
 Receiver::Receiver(QObject *parent) : QObject(parent)
 {
-    // Create the socket, bind it to an address and port
-    // to enable receiving and connect the signal that is
-    // emitted when a packet is received to a processing
-    // function
-    this->m_sock = new QUdpSocket(this);
-    this->m_sock->bind(QHostAddress::LocalHost,64321);
-    connect(this->m_sock,
-            &QUdpSocket::readyRead,
-            this,
-            &Receiver::process
-            );
+    // Create a socket listener and a thread for it to work in
+    this->m_socketListener = new SocketListener();
+    this->m_socketListenerThread = new QThread();
+    this->m_socketListenerThread->start();
+    this->m_socketListener->moveToThread(this->m_socketListenerThread);
 
 
     this->m_processThread = new QThread();
@@ -39,6 +32,7 @@ Receiver::Receiver(QObject *parent) : QObject(parent)
     this->m_updateTimer->start(1000);
 }
 
+<<<<<<< HEAD
 // Gets every received datagram from the socket
 // and stores the data in a vector
 void Receiver::process(){
@@ -73,4 +67,14 @@ void Receiver::update(){
         }
         MainWindow::mutex.unlock();
     }
+=======
+// This function is called every second.
+// Calls SocketListener::get_messages to get all the
+// received messages. Those messages, if they are not
+// an empty string, are sent forward through Receiver::add_message
+void Receiver::update(){
+    QString msg = this->m_socketListener->get_messages();
+    if (msg!="")
+        emit add_message(msg);
+>>>>>>> dev2
 }
