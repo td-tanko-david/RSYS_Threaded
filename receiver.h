@@ -2,9 +2,8 @@
 #define RECEIVER_H
 
 #include <QObject>
-#include <QUdpSocket>
 #include <QTimer>
-#include <QMutex>
+#include "socketlistener.h"
 
 class Receiver : public QObject
 {
@@ -12,13 +11,10 @@ class Receiver : public QObject
 public:
     explicit Receiver(QObject *parent = nullptr);
 private:
-    QUdpSocket *m_sock;
     void update();
-    void process();
 
-    QMutex m_mutex;
     QTimer *m_updateTimer;
-    std::vector<QString> m_receivedMessages;
+    SocketListener *m_socketListener;
 signals:
     void add_message(QString msg);
 public slots:

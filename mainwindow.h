@@ -3,11 +3,11 @@
 
 #include <QMainWindow>
 #include <QMutex>
-#include "receiver.h"
 #include "sender.h"
 #include <QThread>
 #include "mytextedit.h"
 #include "keyenterreceiver.h"
+#include "receiver.h"
 
 namespace Ui {
 class MainWindow;
