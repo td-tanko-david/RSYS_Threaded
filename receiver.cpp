@@ -30,16 +30,15 @@ Receiver::Receiver(QObject *parent) : QObject(parent)
 // Gets every received datagram from the socket
 // and stores the data in a vector
 void Receiver::process(){
-    MainWindow::mutex.tryLock();
-
-    while (this->m_sock->hasPendingDatagrams()){
-        QByteArray datagram;
-        datagram.resize(this->m_sock->pendingDatagramSize());
-        this->m_sock->readDatagram(datagram.data(), datagram.size());
-        this->m_receivedMessages.push_back(QString(datagram.data()));
+    if (MainWindow::mutex.tryLock()){
+       while (this->m_sock->hasPendingDatagrams()){
+            QByteArray datagram;
+            datagram.resize(this->m_sock->pendingDatagramSize());
+            this->m_sock->readDatagram(datagram.data(), datagram.size());
+            this->m_receivedMessages.push_back(QString(datagram.data()));
+        }
+        MainWindow::mutex.unlock();
     }
-
-    MainWindow::mutex.unlock();
 }
 
 // This function is called every second
@@ -47,12 +46,11 @@ void Receiver::process(){
 // and sends them through an emitted signal.
 // Every message sent is removed from the vector
 void Receiver::update(){
-    MainWindow::mutex.tryLock();
-
-    while (!this->m_receivedMessages.empty()){
-        emit add_message(this->m_receivedMessages.back());
-        this->m_receivedMessages.pop_back();
+    if (MainWindow::mutex.tryLock()){
+        while (!this->m_receivedMessages.empty()){
+            emit add_message(this->m_receivedMessages.back());
+            this->m_receivedMessages.pop_back();
+        }
+        MainWindow::mutex.unlock();
     }
-
-    MainWindow::mutex.unlock();
 }
