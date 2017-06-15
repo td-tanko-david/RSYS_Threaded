@@ -12,23 +12,11 @@ class Receiver : public QObject
 public:
     explicit Receiver(QObject *parent = nullptr);
 private:
-<<<<<<< HEAD
-    QUdpSocket *m_sock;
-    void process();
-    void update();
-
-    std::vector<QString> m_receivedMessages;
-
-    QThread *m_updateThread;
-    QThread *m_processThread;
-    QTimer *m_updateTimer;
-=======
     void update();
 
     QTimer *m_updateTimer;
     SocketListener *m_socketListener;
     QThread *m_socketListenerThread;
->>>>>>> dev2
 signals:
     void add_message(QString msg);
 public slots:
