@@ -19,7 +19,7 @@ SocketListener::SocketListener(QObject *parent) : QObject(parent)
 // and stores the data in a vector.
 void SocketListener::process(){
     if (this->mutex.tryLock()){
-       while (this->m_socket->hasPendingDatagrams()){
+        while (this->m_socket->hasPendingDatagrams()){
             QByteArray datagram;
             datagram.resize(this->m_socket->pendingDatagramSize());
             this->m_socket->readDatagram(datagram.data(), datagram.size());
@@ -37,10 +37,10 @@ QString SocketListener::get_messages(){
     QString messages;
     if (this->mutex.tryLock()){
         while (!this->m_receivedMessages.empty()){
-            messages += this->m_receivedMessages.back();
+            messages += this->m_receivedMessages.front();
             if (this->m_receivedMessages.size()>1)
                  messages += "\n";
-            this->m_receivedMessages.pop_back();
+            this->m_receivedMessages.erase(this->m_receivedMessages.begin());
         }
         this->mutex.unlock();
     }

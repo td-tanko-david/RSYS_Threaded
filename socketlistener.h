@@ -21,6 +21,9 @@ private:
     // Stores the received datagrams
     std::vector<QString> m_receivedMessages;
     QMutex mutex;
+
+    int lol;
+
 private slots:
     // Connected to QUdpSocket::readyRead signal.
     // Reads all the messages from the socket.

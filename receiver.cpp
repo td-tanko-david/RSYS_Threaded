@@ -1,5 +1,4 @@
 #include "receiver.h"
-#include <iostream>
 
 Receiver::Receiver(QObject *parent) : QObject(parent)
 {
