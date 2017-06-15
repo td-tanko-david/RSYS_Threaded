@@ -14,7 +14,6 @@ Receiver::Receiver(QObject *parent) : QObject(parent)
             &Receiver::update_helper
             );
     this->m_updateTimer->start(1000);
-
 }
 
 // This function is called every second. Creates a thread which

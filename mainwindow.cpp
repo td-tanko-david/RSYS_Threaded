@@ -37,11 +37,6 @@ MainWindow::MainWindow(QString mode,QWidget *parent) :
         // The filter emits the enter_pressed signal.
         this->m_key = new keyEnterReceiver();
         ui->textEdit_messageInput->installEventFilter(this->m_key);
-        connect(this->m_key,
-                &keyEnterReceiver::enter_pressed,
-                ui->textEdit_messageInput,
-                &MyTextEdit::init_send
-                );
 
         // Start the client thread.
         QThread *thread_snd = new QThread();
@@ -57,6 +52,11 @@ MainWindow::MainWindow(QString mode,QWidget *parent) :
                 Qt::QueuedConnection
                 );
         // Send a message when the enter key is pressed.
+        connect(this->m_key,
+                &keyEnterReceiver::enter_pressed,
+                ui->textEdit_messageInput,
+                &MyTextEdit::init_send
+                );
         connect(ui->textEdit_messageInput,
                 &MyTextEdit::send_msg,
                 this->m_sender,
