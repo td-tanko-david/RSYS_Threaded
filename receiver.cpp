@@ -17,20 +17,34 @@ Receiver::Receiver(QObject *parent) : QObject(parent)
             );
 
 
+    this->m_processThread = new QThread();
+    this->m_processThread->start();
     this->m_updateThread = new QThread();
-    this->m_updater = new Updater();
-    this->m_updater->moveToThread(this->m_updateThread);
     this->m_updateThread->start();
+    /*this->m_updater = new Updater();
+    this->m_updater->moveToThread(this->m_updateThread);
     connect(this->m_updater,
             &Updater::update_now,
             this,
             &Receiver::update
+            );*/
+    // Create a timer that calls a function every second
+    // The function displays the received messages
+    this->m_updateTimer = new QTimer(this);
+    connect(this->m_updateTimer,
+            &QTimer::timeout,
+            this,
+            &Receiver::update
             );
+    this->m_updateTimer->start(1000);
 }
 
 // Gets every received datagram from the socket
 // and stores the data in a vector
 void Receiver::process(){
+    std::cout << "Process 1" << this->thread()->currentThreadId() << std::endl;
+    this->moveToThread(this->m_processThread);
+    std::cout << "Process 2" << this->thread()->currentThreadId() << std::endl;
     // Access the vector only if the lock is acquired
     if( MainWindow::mutex.tryLock() ){
         while (this->m_sock->hasPendingDatagrams()){
@@ -48,6 +62,9 @@ void Receiver::process(){
 // and sends them through an emitted signal.
 // Every message sent is removed from the vector
 void Receiver::update(){
+    std::cout << "Update 1" << this->thread()->currentThreadId() << std::endl;
+    this->moveToThread(this->m_updateThread);
+    std::cout << "Update 2" << this->thread()->currentThreadId() << std::endl;
     // Access the vector only if the lock is acquired
     if( MainWindow::mutex.tryLock() ){
         while (!this->m_receivedMessages.empty()){

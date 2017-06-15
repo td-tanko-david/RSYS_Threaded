@@ -30,16 +30,14 @@ SOURCES += \
     sender.cpp \
     receiver.cpp \
     mytextedit.cpp \
-    keyenterreceiver.cpp \
-    updater.cpp
+    keyenterreceiver.cpp
 
 HEADERS += \
         mainwindow.h \
     sender.h \
     receiver.h \
     mytextedit.h \
-    keyenterreceiver.h \
-    updater.h
+    keyenterreceiver.h
 
 FORMS += \
         mainwindow.ui

@@ -5,7 +5,6 @@
 #include <QUdpSocket>
 #include <QTimer>
 #include <QMutex>
-#include "updater.h"
 
 class Receiver : public QObject
 {
@@ -20,7 +19,8 @@ private:
     std::vector<QString> m_receivedMessages;
 
     QThread *m_updateThread;
-    Updater *m_updater;
+    QThread *m_processThread;
+    QTimer *m_updateTimer;
 signals:
     void add_message(QString msg);
 public slots:
