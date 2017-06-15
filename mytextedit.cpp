@@ -17,10 +17,9 @@ void MyTextEdit::init_send(){
 }
 
 // Solves the issue of a newline character being left in the editor
-// after confirming a message send using the Enter key.
+// after confirming a message send using the Enter key by ignoring it.
 void MyTextEdit::keyPressEvent(QKeyEvent *e){
     if((e->key()==Qt::Key_Enter) || (e->key()==Qt::Key_Return) ){
-        //enter clicked
         return;
     }
     return QTextEdit::keyPressEvent(e);

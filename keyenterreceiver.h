@@ -10,11 +10,11 @@ public:
     explicit keyEnterReceiver(QObject *parent = nullptr);
 
 signals:
-    // Signal emitted when the Enter key is pressed
+    // Signal emitted when the Enter key is pressed.
     void enter_pressed();
 public slots:
 protected:
-    // A filter which handles the Enter key being pressed
+    // A filter which handles the Enter key being pressed.
     bool eventFilter(QObject* obj, QEvent* event);
 };
 

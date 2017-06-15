@@ -10,12 +10,16 @@ class Sender : public QObject
     Q_OBJECT
 public:
     explicit Sender(QObject *parent = nullptr);
-    void send_message(QString msg);
 private:
+    // QUdpSocket used for sending datagrams.
     QUdpSocket *m_sock;
 signals:
-
 public slots:
+    // Connected to
+    // - a QPushButton widget,
+    // - a MyTextEdit widget.
+    // Sends the message msg through the socket.
+    void send_message(QString msg);
 };
 
 #endif // SENDER_H

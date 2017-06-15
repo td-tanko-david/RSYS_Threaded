@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-QMutex MainWindow::mutex;
-
 MainWindow::MainWindow(QString mode,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
